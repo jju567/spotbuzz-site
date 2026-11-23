@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy – SpotBuzz (ReissuTutka)</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --accent: #0891b2;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --card: #162033;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: #263449;
+        --accent: #22d3ee;
+      }
+    }
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+    h1, h2, h3 { line-height: 1.3; }
+    h1 { margin-top: 0; font-size: 1.8rem; }
+    h2 { margin-top: 1.8rem; font-size: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    a { color: var(--accent); }
+    .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 1.2rem; }
+    .lang-nav { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .lang-nav a {
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .callout {
+      border-left: 4px solid var(--accent);
+      padding: 10px 14px;
+      background: rgba(8, 145, 178, 0.08);
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+    ul { padding-left: 1.3rem; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Privacy Policy / Tietosuojaseloste</h1>
+    <p class="meta"><strong>App:</strong> SpotBuzz (ReissuTutka) &nbsp;|&nbsp; <strong>Last updated:</strong> 2026-11-23</p>
+
+    <div class="lang-nav">
+      <a href="#en">English</a>
+      <a href="#fi">Suomi</a>
+    </div>
+
+    <section id="en">
+      <div class="callout">
+        <strong>Privacy-first summary:</strong> SpotBuzz is designed to work offline on your device. We do <strong>not</strong> run tracking servers, we do <strong>not</strong> use advertising or analytics SDKs, and we never sell or share your personal location history.
+      </div>
+
+      <h2>1. Data Controller &amp; Contact</h2>
+      <p>
+        Developer: SpotBuzz / ReissuTutka<br />
+        Contact email: <a href="mailto:jarmo.juntunen+spotbuzz@gmail.com">jarmo.juntunen+spotbuzz@gmail.com</a>
+      </p>
+
+      <h2>2. Data Stored Locally on Your Device</h2>
+      <p>All app data is stored exclusively in the app's private storage on your device (with Android cloud/ADB backup disabled):</p>
+      <ul>
+        <li><strong>Saved places, reminders, and favorites:</strong> Place names, coordinates, alert radius, and reminder messages that you create or import (KML, GeoJSON, CSV, JSON).</li>
+        <li><strong>App preferences:</strong> Default alert radius, quiet hours, compass calibration offset, language, and theme mode.</li>
+        <li><strong>Local diagnostic logs:</strong> Background geofence events are stored locally for up to 14 days to help you verify alert behavior, then automatically deleted. These logs are never uploaded anywhere.</li>
+      </ul>
+
+      <h2>3. Location Data &amp; Background Location</h2>
+      <p>SpotBuzz requests location permissions (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, and optionally <code>ACCESS_BACKGROUND_LOCATION</code>) strictly to deliver core app features:</p>
+      <ul>
+        <li><strong>Background geofence alerts:</strong> The app registers your nearest saved places with Android's built-in Geofencing API (plus optional on-device passive/motion-triggered checks) so your phone can alert you when you arrive near a place, even when the app is closed or not in use.</li>
+        <li><strong>Live radar &amp; Walk Radar:</strong> Displays distance and compass direction to your nearest active target while the screen is on. When Walk Radar is explicitly enabled by the user, compass sensors stop when the screen turns off while lightweight adaptive proximity checks continue locally on-device until stopped.</li>
+        <li>Your live location is <strong>never</strong> transmitted to our servers or used for advertising.</li>
+      </ul>
+
+      <h2>4. Optional User-Initiated Network Requests</h2>
+      <p>Background monitoring works 100% offline. The <code>INTERNET</code> permission is used only when you explicitly trigger one of the following actions:</p>
+      <ul>
+        <li><strong>Place reminder search (OpenStreetMap Nominatim &amp; Overpass API):</strong> When you search for a place name (e.g., a store or pharmacy), the app sends your search query and an approximate search center (rounded to ~110 m) to OpenStreetMap services (<code>nominatim.openstreetmap.org</code>, <code>overpass-api.de</code>, <code>overpass.kumi.systems</code>) to find matching locations within 50 km.</li>
+        <li><strong>Map view (OpenStreetMap):</strong> When you open the Map tab, map tiles are loaded from OpenStreetMap (<code>tile.openstreetmap.org</code>). Map data is &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL 1.0).</li>
+        <li><strong>Google Maps link import:</strong> If you explicitly paste or share a Google Maps link into the app, the app resolves that link over HTTPS to extract the place coordinates.</li>
+        <li><strong>Voice input:</strong> If you tap Speak, Android's system speech recognition service processes your voice input according to your device's speech settings.</li>
+        <li><strong>In-App Purchases (Google Play Billing):</strong> On Google Play builds, optional Pro upgrades are processed securely by Google Play Billing. SpotBuzz does not collect, process, or store your payment card or billing details; only your local Pro entitlement status is cached on-device.</li>
+      </ul>
+
+      <h2>5. Data Sharing &amp; Third Parties</h2>
+      <p>We do not sell, rent, or trade your personal data. No third-party analytics, crash-reporting, or advertising SDKs are included in the app. External requests are limited strictly to the user-initiated services listed in Section 4.</p>
+
+      <h2>6. Data Retention &amp; Your Rights (GDPR)</h2>
+      <p>Because your data is stored only on your device, you have full control at all times:</p>
+      <ul>
+        <li>Delete individual places or reminders directly in the app.</li>
+        <li>Clear diagnostic logs at any time in the Logs view.</li>
+        <li>Revoke location or notification permissions in Android Settings.</li>
+        <li>Uninstall the app to permanently delete all locally stored data.</li>
+      </ul>
+
+      <h2>7. Children's Privacy</h2>
+      <p>SpotBuzz is not directed to children under the age of 13 (or 16 in the EEA), and we do not knowingly collect personal data from children.</p>
+
+      <h2>8. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy if app features or legal requirements change. The latest version will always be available at this URL with an updated revision date.</p>
+    </section>
+
+    <hr />
+
+    <section id="fi">
+      <h1>Tietosuojaseloste – SpotBuzz (ReissuTutka)</h1>
+      <div class="callout">
+        <strong>Tiivistelmä:</strong> SpotBuzz toimii yksityisyyttä kunnioittaen suoraan puhelimessasi. Emme ylläpidä seurantapalvelimia, emme käytä mainos- tai analytiikka-SDK:ita emmekä myy tai jaa sijaintihistoriaasi.
+      </div>
+
+      <h2>1. Rekisterinpitäjä ja yhteystiedot</h2>
+      <p>
+        Kehittäjä: SpotBuzz / ReissuTutka<br />
+        Sähköposti: <a href="mailto:jarmo.juntunen+spotbuzz@gmail.com">jarmo.juntunen+spotbuzz@gmail.com</a>
+      </p>
+
+      <h2>2. Laitteelle paikallisesti tallennettavat tiedot</h2>
+      <p>Kaikki sovelluksen tiedot tallennetaan vain puhelimesi yksityiseen sovellusmuistiin (Androidin pilvi-/ADB-varmuuskopiointi on estetty):</p>
+      <ul>
+        <li><strong>Tallennetut paikat, muistutukset ja suosikit:</strong> Itse luomasi tai tuomasi kohteet (KML, GeoJSON, CSV, JSON), niiden koordinaatit, hälytyssäteet ja muistutustekstit.</li>
+        <li><strong>Asetukset:</strong> Oletussäde, hiljaiset tunnit, kompassin kalibrointi, kieli ja teema.</li>
+        <li><strong>Paikallinen tapahtumaloki:</strong> Taustahälytysten diagnostiikkaloki säilytetään puhelimessa enintään 14 vrk ja poistetaan automaattisesti. Lokeja ei lähetetä koskaan verkkoon.</li>
+      </ul>
+
+      <h2>3. Sijaintitiedot ja taustasijainti</h2>
+      <p>Sovellus pyytää sijaintilupia (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code> ja valinnaisesti <code>ACCESS_BACKGROUND_LOCATION</code>) vain ydintoimintojensa toteuttamiseksi:</p>
+      <ul>
+        <li><strong>Taustahälytykset (Geofencing):</strong> Sovellus rekisteröi lähimmät tallennetut kohteesi Androidin Geofencing-rajapintaan (sekä valinnaiseen laitteen sisäiseen passiiviseen/liikkeentunnistettuun lähitarkistukseen), jotta saat hälytyksen saapuessasi kohteen lähelle myös sovelluksen ollessa suljettuna tai taustalla.</li>
+        <li><strong>Elävä tutka &amp; Kävelytutka:</strong> Näyttää etäisyyden ja kompassisuunnan lähimpään kohteeseen näytön ollessa päällä. Käyttäjän erikseen käynnistämässä Kävelytutkassa kompassi pysähtyy näytön sammuessa ja kevyt adaptiivinen lähitarkistus jatkuu laitteella kunnes kytketään pois.</li>
+        <li>Reaaliaikaista sijaintiasi ei koskaan lähetetä kehittäjän palvelimille tai käytetä mainontaan.</li>
+      </ul>
+
+      <h2>4. Käyttäjän käynnistämät verkkopyynnöt</h2>
+      <p>Taustaseuranta toimii 100 % offline-tilassa. <code>INTERNET</code>-lupaa käytetään vain, kun käynnistät itse jonkin seuraavista toiminnoista:</p>
+      <ul>
+        <li><strong>Paikkamuistutushaku (OpenStreetMap Nominatim &amp; Overpass API):</strong> Hakiessasi kohdetta nimellä (esim. kauppa tai apteekki) sovellus lähettää hakusanan ja karkean hakukeskipisteen (pyöristetty ~110 m tarkkuuteen) OpenStreetMap-palveluille 50 km säteellä olevien kohteiden löytämiseksi.</li>
+        <li><strong>Karttanäkymä (OpenStreetMap):</strong> Karttatiilet ladataan OpenStreetMap-palvelimelta (<code>tile.openstreetmap.org</code>) vain karttasivua katseltaessa (&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, ODbL 1.0).</li>
+        <li><strong>Google Maps -linkin tuonti:</strong> Kun jaat tai liität Google Maps -linkin sovellukseen, sovellus avaa linkin HTTPS:llä koordinaattien lukemiseksi.</li>
+        <li><strong>Puheentunnistus:</strong> Painaessasi <em>Sanele</em> käytetään Android-laitteen omaa puheentunnistusta.</li>
+        <li><strong>Sovelluksen sisäiset ostot (Google Play Billing):</strong> Google Play -versiossa valinnaisen Pro-päivityksen maksutapahtuman käsittelee Google Play Billing. SpotBuzz ei kerää eikä tallenna maksukortti- tai laskutustietojasi; laitteelle tallennetaan vain paikallinen tieto Pro-oikeuden voimassaolosta.</li>
+      </ul>
+
+      <h2>5. Tietojen luovutus ja kolmannet osapuolet</h2>
+      <p>Emme myy tai vuokraa henkilötietoja. Sovellus ei sisällä kolmannen osapuolen analytiikka-, mainos- tai kaatumisraportointikirjastoja.</p>
+
+      <h2>6. Tietojen säilytys ja oikeutesi (GDPR)</h2>
+      <p>Koska tiedot sijaitsevat vain omalla laitteellasi, hallitset niitä täysin itse:</p>
+      <ul>
+        <li>Voit poistaa yksittäisiä paikkoja ja muistutuksia sovelluksessa.</li>
+        <li>Voit tyhjentää tapahtumalokin milloin tahansa Loki-näkymästä.</li>
+        <li>Voit peruuttaa sijainti- ja ilmoitusluvat Androidin asetuksista.</li>
+        <li>Sovelluksen poistaminen poistaa kaikki paikalliset tiedot pysyvästi.</li>
+      </ul>
+
+      <h2>7. Lasten yksityisyys</h2>
+      <p>Sovellusta ei ole suunnattu alle 13-vuotiaille (ETA-alueella alle 16-vuotiaille), emmekä tietoisesti kerää lasten henkilötietoja.</p>
+
+      <h2>8. Muutokset selosteeseen</h2>
+      <p>Päivitämme tätä tietosuojaselostetta tarvittaessa sovelluksen tai lainsäädännön muuttuessa. Ajantasainen versio löytyy aina tästä osoitteesta.</p>
+    </section>
+  </main>
+</body>
+</html>
