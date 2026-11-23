@@ -246,9 +246,9 @@
             <stop offset="75%" stop-color="#091526" />
             <stop offset="100%" stop-color="#060d18" />
           </radialGradient>
-          <linearGradient id="sweepGrad" x1="50%" y1="50%" x2="100%" y2="10%">
+          <linearGradient id="sweepGrad" gradientUnits="userSpaceOnUse" x1="120" y1="35" x2="50" y2="60">
             <stop offset="0%" stop-color="#34d399" stop-opacity="0.45" />
-            <stop offset="100%" stop-color="#22d3ee" stop-opacity="0.02" />
+            <stop offset="100%" stop-color="#22d3ee" stop-opacity="0" />
           </linearGradient>
         </defs>
 
@@ -270,9 +270,9 @@
         <text x="120" y="220" text-anchor="middle" fill="#64748b" font-size="10" font-weight="600" font-family="sans-serif">S</text>
         <text x="26" y="124" text-anchor="middle" fill="#64748b" font-size="10" font-weight="600" font-family="sans-serif">W</text>
 
-        <!-- Rotating radar sweep -->
+        <!-- Rotating radar sweep (bright leading edge, fading trail behind) -->
         <g class="radar-sweep">
-          <path d="M120,120 L120,14 A106,106 0 0,1 198,48 Z" fill="url(#sweepGrad)" />
+          <path d="M120,120 L120,14 A106,106 0 0,0 45,45 Z" fill="url(#sweepGrad)" />
           <line x1="120" y1="120" x2="120" y2="14" stroke="#34d399" stroke-width="2" stroke-linecap="round" />
         </g>
 
