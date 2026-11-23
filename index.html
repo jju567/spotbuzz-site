@@ -222,6 +222,19 @@
       flex-wrap: wrap;
     }
     .hidden { display: none; }
+    .email-reveal {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font: inherit;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .email-reveal:hover {
+      border-color: var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -233,7 +246,7 @@
       </div>
       <nav>
         <a href="privacy.html" data-en="Privacy Policy" data-fi="Tietosuojaseloste">Privacy Policy</a>
-        <a href="mailto:jarmo.juntunen+spotbuzz@gmail.com" data-en="Support" data-fi="Tuki">Support</a>
+        <a href="#contact" data-en="Support" data-fi="Tuki">Support</a>
         <button id="btn-en" class="lang-btn active" type="button" onclick="setLang('en')">EN</button>
         <button id="btn-fi" class="lang-btn" type="button" onclick="setLang('fi')">FI</button>
       </nav>
@@ -430,10 +443,10 @@
       </section>
     </main>
 
-    <footer>
+    <footer id="contact">
       <div>
         <strong>SpotBuzz</strong> &bull;
-        <a href="mailto:jarmo.juntunen+spotbuzz@gmail.com">jarmo.juntunen+spotbuzz@gmail.com</a>
+        <button type="button" class="email-reveal" onclick="revealEmail(this)" data-en="Show support email" data-fi="Näytä tukisähköposti">Show support email</button>
       </div>
       <div>
         <a href="privacy.html">Privacy Policy / Tietosuojaseloste</a> &bull;
@@ -453,6 +466,15 @@
       document.querySelectorAll('[data-en][data-fi]').forEach(function (el) {
         el.textContent = isFi ? el.getAttribute('data-fi') : el.getAttribute('data-en');
       });
+    }
+    function revealEmail(btn) {
+      var u = [106,97,114,109,111,46,106,117,110,116,117,110,101,110,43,115,112,111,116,98,117,122,122];
+      var d = [103,109,97,105,108,46,99,111,109];
+      var addr = String.fromCharCode.apply(null, u) + String.fromCharCode(64) + String.fromCharCode.apply(null, d);
+      var a = document.createElement('a');
+      a.href = 'mailto:' + addr;
+      a.textContent = addr;
+      btn.replaceWith(a);
     }
     if (navigator.language && navigator.language.toLowerCase().startsWith('fi')) {
       setLang('fi');

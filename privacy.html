@@ -63,6 +63,17 @@
     }
     ul { padding-left: 1.3rem; }
     hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    .email-reveal {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 10px;
+      font: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .email-reveal:hover { border-color: var(--accent); }
   </style>
 </head>
 <body>
@@ -83,7 +94,7 @@
       <h2>1. Data Controller &amp; Contact</h2>
       <p>
         Developer: SpotBuzz / ReissuTutka<br />
-        Contact email: <a href="mailto:jarmo.juntunen+spotbuzz@gmail.com">jarmo.juntunen+spotbuzz@gmail.com</a>
+        Contact email: <button type="button" class="email-reveal" onclick="revealEmail(this)">Show email</button>
       </p>
 
       <h2>2. Data Stored Locally on Your Device</h2>
@@ -142,7 +153,7 @@
       <h2>1. Rekisterinpitäjä ja yhteystiedot</h2>
       <p>
         Kehittäjä: SpotBuzz / ReissuTutka<br />
-        Sähköposti: <a href="mailto:jarmo.juntunen+spotbuzz@gmail.com">jarmo.juntunen+spotbuzz@gmail.com</a>
+        Sähköposti: <button type="button" class="email-reveal" onclick="revealEmail(this)">Näytä sähköposti</button>
       </p>
 
       <h2>2. Laitteelle paikallisesti tallennettavat tiedot</h2>
@@ -190,5 +201,16 @@
       <p>Päivitämme tätä tietosuojaselostetta tarvittaessa sovelluksen tai lainsäädännön muuttuessa. Ajantasainen versio löytyy aina tästä osoitteesta.</p>
     </section>
   </main>
+  <script>
+    function revealEmail(btn) {
+      var u = [106,97,114,109,111,46,106,117,110,116,117,110,101,110,43,115,112,111,116,98,117,122,122];
+      var d = [103,109,97,105,108,46,99,111,109];
+      var addr = String.fromCharCode.apply(null, u) + String.fromCharCode(64) + String.fromCharCode.apply(null, d);
+      var a = document.createElement('a');
+      a.href = 'mailto:' + addr;
+      a.textContent = addr;
+      btn.replaceWith(a);
+    }
+  </script>
 </body>
 </html>
