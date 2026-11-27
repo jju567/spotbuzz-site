@@ -122,6 +122,16 @@
     .btn-primary { background: var(--accent); color: #06131f; }
     .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
     .note { color: var(--muted); font-size: 0.86rem; margin-top: 14px; }
+    .spotpack-explainer {
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.28);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .spotpack-explainer strong { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -136,6 +146,10 @@
         <button id="btn-en" class="lang-btn active" type="button" onclick="setLang('en')">EN</button>
         <button id="btn-fi" class="lang-btn" type="button" onclick="setLang('fi')">FI</button>
       </nav>
+    </div>
+
+    <div id="spotpack-explainer" class="spotpack-explainer">
+      <strong>What is a SpotPack?</strong> A portable collection of places &amp; reminders encoded directly in this link (no server or account needed). Open it in SpotBuzz to import all spots into their own folder at once.
     </div>
 
     <section class="card">
@@ -172,6 +186,7 @@
         dlBtn: 'Download .json',
         demoBtn: 'Load Demo: Oulu Top 10',
         aboutBtn: 'About SpotBuzz',
+        explainerHtml: '<strong>What is a SpotPack?</strong> A portable collection of places &amp; reminders encoded directly in this link (no server or account needed). Open it in SpotBuzz to import all spots into their own folder at once.',
         note: 'Privacy-first: Decoded locally in your browser from the URL fragment. Tap "Open in SpotBuzz" (or "Download .json" -> Import File in SpotBuzz, or "Copy SpotPack Link" -> Maps Link in SpotBuzz).'
       },
       fi: {
@@ -190,6 +205,7 @@
         dlBtn: 'Lataa .json',
         demoBtn: 'Lataa demo: Oulu Top 10',
         aboutBtn: 'Tietoa SpotBuzzista',
+        explainerHtml: '<strong>Mikä on SpotPack?</strong> Linkin sisään pakattu kohde- ja muistutuskokoelma (ei vaadi palvelinta tai tiliä). Avaa se SpotBuzzissa tuodaksesi kaikki kohteet kerralla omaan kansioonsa.',
         note: 'Yksityisyys ensin: Puretaan paikallisesti selaimessa URL-fragmentista. Paina "Avaa SpotBuzzissa" (tai "Lataa .json" → SpotBuzzissa Tuo tiedosto, tai "Kopioi SpotPack-linkki" → Maps-linkki).'
       }
     };
@@ -213,6 +229,7 @@
       document.getElementById('btn-dl').textContent = t.dlBtn;
       document.getElementById('btn-demo').textContent = t.demoBtn;
       document.getElementById('btn-about').textContent = t.aboutBtn;
+      document.getElementById('spotpack-explainer').innerHTML = t.explainerHtml;
       document.getElementById('pack-note').textContent = t.note;
       decodeSpotPack();
     }
