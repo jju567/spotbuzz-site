@@ -465,6 +465,7 @@
       document.getElementById('btn-en').classList.toggle('active', !isFi);
       document.getElementById('btn-fi').classList.toggle('active', isFi);
       document.documentElement.lang = lang;
+      try { localStorage.setItem('spotbuzz_lang', lang); } catch (_) {}
       document.querySelectorAll('[data-en][data-fi]').forEach(function (el) {
         el.textContent = isFi ? el.getAttribute('data-fi') : el.getAttribute('data-en');
       });
@@ -478,8 +479,12 @@
       a.textContent = addr;
       btn.replaceWith(a);
     }
-    if (navigator.language && navigator.language.toLowerCase().startsWith('fi')) {
+    var savedLang = null;
+    try { savedLang = localStorage.getItem('spotbuzz_lang'); } catch (_) {}
+    if (savedLang === 'fi' || (!savedLang && navigator.language && navigator.language.toLowerCase().startsWith('fi'))) {
       setLang('fi');
+    } else {
+      setLang('en');
     }
   </script>
 </body>
