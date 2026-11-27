@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SpotPack – SpotBuzz Shared Place List</title>
+  <title>SpotPack – SpotBuzz</title>
   <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
   <style>
     :root {
@@ -14,6 +14,7 @@
       --muted: #94a3b8;
       --accent: #22d3ee;
       --accent-green: #34d399;
+      --accent-glow: rgba(34, 211, 238, 0.16);
     }
     * { box-sizing: border-box; }
     body {
@@ -32,6 +33,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
       margin-bottom: 24px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
@@ -51,6 +54,26 @@
       border-radius: 50%;
       background: var(--accent-green);
       box-shadow: 0 0 12px var(--accent-green);
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lang-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .lang-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow);
     }
     .card {
       background: var(--card);
@@ -108,7 +131,11 @@
         <span class="dot"></span>
         <span>SpotBuzz SpotPack</span>
       </a>
-      <a class="osm-link" href="../privacy.html">Privacy</a>
+      <nav>
+        <a id="nav-privacy" class="osm-link" href="../privacy.html">Privacy</a>
+        <button id="btn-en" class="lang-btn active" type="button" onclick="setLang('en')">EN</button>
+        <button id="btn-fi" class="lang-btn" type="button" onclick="setLang('fi')">FI</button>
+      </nav>
     </div>
 
     <section class="card">
@@ -119,18 +146,72 @@
         <button id="btn-copy" class="btn btn-primary" type="button" onclick="copyLink()">Copy SpotPack Link</button>
         <button id="btn-dl" class="btn btn-secondary" type="button" onclick="downloadJson()" style="display:none">Download .json</button>
         <button id="btn-demo" class="btn btn-primary" type="button" onclick="loadDemo()" style="display:none">Load Demo: Oulu Top 10</button>
-        <a class="btn btn-secondary" href="../">About SpotBuzz</a>
+        <a id="btn-about" class="btn btn-secondary" href="../">About SpotBuzz</a>
       </div>
-      <p class="note">
-        Privacy-first: All places in this SpotPack are decoded locally in your browser from the URL fragment — nothing is sent to a server.
-        Paste or share this link into <strong>SpotBuzz</strong> on Android to import it.
-      </p>
+      <p id="pack-note" class="note"></p>
     </section>
   </main>
 
   <script>
     var DEMO_HASH = '#v1=H4sIADILCWsC_23Su26DMBQG4FexPHRCEQYMLlubJZV6iZpsVQcLrHIKsakvkaoo714HIjBtR4P86fz_8QkfcUkibHGJX1zn0F71iMQ4wj0u305Y-u97paFXXQdgwP_oOC5zuopJSm79SeEyoassp4k_aVyyOMK1v_XEdSss2n05rgUyllsn8DkayWfuuZbr0EtjwmYvviX54BF6Be8Frxp0gzr4aGyjnJm5PQirDpyH07G0mDVGkxGLr9iuAiErgdZCWj1DdyBVx2XvwFi1yDpbBRup5EqtwX6j3qedlFdlHV-GI4QlATFEDefZiloYq4FLX5UWwk7YZSsSWacOoFrQbbuYKytClrJ0yQ4rXXPbiFrzbjK30IL5PSHLspmiGVm2v7k0oqFCXFt_VyIwvqh6IjeuH0g_-WIJYXEFXZoPA2GW5T2ClFz-ma5IgqD5cPonqLGdQNqBNPPbcKDDh5HkwURjyCRUPn3LSMNRaAO1fxnv5x93Xee8JAMAAA';
+    var I18N = {
+      en: {
+        privacy: 'Privacy',
+        privacyHref: '../privacy.html',
+        loading: 'Loading SpotPack…',
+        emptyTitle: 'SpotBuzz SpotPack',
+        emptyMeta: 'No SpotPack in URL yet — try the Oulu Top 10 demo pack below!',
+        placesMeta: '{n} places • Decoded locally in browser',
+        mapLink: 'Map ↗',
+        invalidTitle: 'Invalid SpotPack link',
+        invalidMeta: 'Could not decode this SpotPack link.',
+        copyBtn: 'Copy SpotPack Link',
+        copiedBtn: 'Copied!',
+        dlBtn: 'Download .json',
+        demoBtn: 'Load Demo: Oulu Top 10',
+        aboutBtn: 'About SpotBuzz',
+        note: 'Privacy-first: All places in this SpotPack are decoded locally in your browser from the URL fragment — nothing is sent to a server. Paste or share this link into SpotBuzz on Android to import it.'
+      },
+      fi: {
+        privacy: 'Tietosuoja',
+        privacyHref: '../privacy.html#fi',
+        loading: 'Puretaan SpotPack-listaa…',
+        emptyTitle: 'SpotBuzz SpotPack',
+        emptyMeta: 'Linkissä ei ole vielä pakettia — kokeile alla olevaa Oulu Top 10 -demopakettia!',
+        placesMeta: '{n} kohdetta • Purettu paikallisesti selaimessa',
+        mapLink: 'Kartta ↗',
+        invalidTitle: 'Virheellinen SpotPack-linkki',
+        invalidMeta: 'Tätä SpotPack-linkkiä ei voitu purkaa.',
+        copyBtn: 'Kopioi SpotPack-linkki',
+        copiedBtn: 'Kopioitu!',
+        dlBtn: 'Lataa .json',
+        demoBtn: 'Lataa demo: Oulu Top 10',
+        aboutBtn: 'Tietoa SpotBuzzista',
+        note: 'Yksityisyys ensin: Kaikki tämän SpotPackin kohteet puretaan paikallisesti selaimessasi URL-fragmentista — mitään ei lähetetä palvelimelle. Liitä tai jaa tämä linkki SpotBuzziin Androidilla tuodaksesi listan.'
+      }
+    };
+
+    var currentLang = 'en';
     var currentPack = null;
+
+    function setLang(lang) {
+      currentLang = lang === 'fi' ? 'fi' : 'en';
+      document.documentElement.lang = currentLang;
+      document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+      document.getElementById('btn-fi').classList.toggle('active', currentLang === 'fi');
+      try { localStorage.setItem('spotbuzz_lang', currentLang); } catch (_) {}
+
+      var t = I18N[currentLang];
+      var priv = document.getElementById('nav-privacy');
+      priv.textContent = t.privacy;
+      priv.href = t.privacyHref;
+      document.getElementById('btn-copy').textContent = t.copyBtn;
+      document.getElementById('btn-dl').textContent = t.dlBtn;
+      document.getElementById('btn-demo').textContent = t.demoBtn;
+      document.getElementById('btn-about').textContent = t.aboutBtn;
+      document.getElementById('pack-note').textContent = t.note;
+      decodeSpotPack();
+    }
 
     function b64UrlToBytes(b64url) {
       var b64 = b64url.replace(/-/g, '+').replace(/_/g, '/');
@@ -142,6 +223,7 @@
     }
 
     async function decodeSpotPack() {
+      var t = I18N[currentLang];
       var titleEl = document.getElementById('pack-title');
       var metaEl = document.getElementById('pack-meta');
       var listEl = document.getElementById('place-list');
@@ -154,8 +236,8 @@
       var hash = window.location.hash || '';
       var match = hash.match(/v1=([A-Za-z0-9_-]+)/);
       if (!match) {
-        titleEl.textContent = 'SpotBuzz SpotPack';
-        metaEl.textContent = 'No SpotPack in URL yet — try the Oulu Top 10 demo pack below!';
+        titleEl.textContent = t.emptyTitle;
+        metaEl.textContent = t.emptyMeta;
         copyBtn.style.display = 'none';
         dlBtn.style.display = 'none';
         demoBtn.style.display = 'inline-block';
@@ -176,7 +258,7 @@
         currentPack = data;
         dlBtn.style.display = 'inline-block';
         titleEl.textContent = String(data.t || 'SpotBuzz SpotPack');
-        metaEl.textContent = data.p.length + ' places • Decoded locally in browser';
+        metaEl.textContent = t.placesMeta.replace('{n}', String(data.p.length));
 
         data.p.slice(0, 100).forEach(function (item) {
           var la = Number(item.la);
@@ -202,15 +284,15 @@
           link.target = '_blank';
           link.rel = 'noopener noreferrer';
           link.href = 'https://www.openstreetmap.org/?mlat=' + la.toFixed(6) + '&mlon=' + lo.toFixed(6) + '#map=16/' + la.toFixed(6) + '/' + lo.toFixed(6);
-          link.textContent = 'Map ↗';
+          link.textContent = t.mapLink;
 
           li.appendChild(left);
           li.appendChild(link);
           listEl.appendChild(li);
         });
       } catch (err) {
-        titleEl.textContent = 'Invalid SpotPack link';
-        metaEl.textContent = 'Could not decode this SpotPack link.';
+        titleEl.textContent = t.invalidTitle;
+        metaEl.textContent = t.invalidMeta;
         dlBtn.style.display = 'none';
       }
     }
@@ -241,13 +323,19 @@
     function copyLink() {
       if (navigator.clipboard) {
         navigator.clipboard.writeText(window.location.href).then(function () {
-          document.getElementById('btn-copy').textContent = 'Copied!';
+          document.getElementById('btn-copy').textContent = I18N[currentLang].copiedBtn;
         });
       }
     }
 
     window.addEventListener('hashchange', decodeSpotPack);
-    decodeSpotPack();
+    var savedLang = null;
+    try { savedLang = localStorage.getItem('spotbuzz_lang'); } catch (_) {}
+    if (savedLang === 'fi' || (!savedLang && navigator.language && navigator.language.toLowerCase().startsWith('fi'))) {
+      setLang('fi');
+    } else {
+      setLang('en');
+    }
   </script>
 </body>
 </html>
