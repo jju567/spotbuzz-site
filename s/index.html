@@ -143,7 +143,8 @@
       <div id="pack-meta" class="meta"></div>
       <ul id="place-list" class="place-list"></ul>
       <div class="actions">
-        <button id="btn-copy" class="btn btn-primary" type="button" onclick="copyLink()">Copy SpotPack Link</button>
+        <a id="btn-open-app" class="btn btn-primary" href="#" style="display:none">Open in SpotBuzz</a>
+        <button id="btn-copy" class="btn btn-secondary" type="button" onclick="copyLink()">Copy SpotPack Link</button>
         <button id="btn-dl" class="btn btn-secondary" type="button" onclick="downloadJson()" style="display:none">Download .json</button>
         <button id="btn-demo" class="btn btn-primary" type="button" onclick="loadDemo()" style="display:none">Load Demo: Oulu Top 10</button>
         <a id="btn-about" class="btn btn-secondary" href="../">About SpotBuzz</a>
@@ -167,10 +168,11 @@
         invalidMeta: 'Could not decode this SpotPack link.',
         copyBtn: 'Copy SpotPack Link',
         copiedBtn: 'Copied!',
+        openAppBtn: 'Open in SpotBuzz',
         dlBtn: 'Download .json',
         demoBtn: 'Load Demo: Oulu Top 10',
         aboutBtn: 'About SpotBuzz',
-        note: 'Privacy-first: All places in this SpotPack are decoded locally in your browser from the URL fragment — nothing is sent to a server. Paste or share this link into SpotBuzz on Android to import it.'
+        note: 'Privacy-first: Decoded locally in your browser from the URL fragment. Tap "Open in SpotBuzz" (or "Download .json" -> Import File in SpotBuzz, or "Copy SpotPack Link" -> Maps Link in SpotBuzz).'
       },
       fi: {
         privacy: 'Tietosuoja',
@@ -184,10 +186,11 @@
         invalidMeta: 'Tätä SpotPack-linkkiä ei voitu purkaa.',
         copyBtn: 'Kopioi SpotPack-linkki',
         copiedBtn: 'Kopioitu!',
+        openAppBtn: 'Avaa SpotBuzzissa',
         dlBtn: 'Lataa .json',
         demoBtn: 'Lataa demo: Oulu Top 10',
         aboutBtn: 'Tietoa SpotBuzzista',
-        note: 'Yksityisyys ensin: Kaikki tämän SpotPackin kohteet puretaan paikallisesti selaimessasi URL-fragmentista — mitään ei lähetetä palvelimelle. Liitä tai jaa tämä linkki SpotBuzziin Androidilla tuodaksesi listan.'
+        note: 'Yksityisyys ensin: Puretaan paikallisesti selaimessa URL-fragmentista. Paina "Avaa SpotBuzzissa" (tai "Lataa .json" → SpotBuzzissa Tuo tiedosto, tai "Kopioi SpotPack-linkki" → Maps-linkki).'
       }
     };
 
@@ -205,6 +208,7 @@
       var priv = document.getElementById('nav-privacy');
       priv.textContent = t.privacy;
       priv.href = t.privacyHref;
+      document.getElementById('btn-open-app').textContent = t.openAppBtn;
       document.getElementById('btn-copy').textContent = t.copyBtn;
       document.getElementById('btn-dl').textContent = t.dlBtn;
       document.getElementById('btn-demo').textContent = t.demoBtn;
@@ -227,6 +231,7 @@
       var titleEl = document.getElementById('pack-title');
       var metaEl = document.getElementById('pack-meta');
       var listEl = document.getElementById('place-list');
+      var openBtn = document.getElementById('btn-open-app');
       var copyBtn = document.getElementById('btn-copy');
       var dlBtn = document.getElementById('btn-dl');
       var demoBtn = document.getElementById('btn-demo');
@@ -238,11 +243,14 @@
       if (!match) {
         titleEl.textContent = t.emptyTitle;
         metaEl.textContent = t.emptyMeta;
+        openBtn.style.display = 'none';
         copyBtn.style.display = 'none';
         dlBtn.style.display = 'none';
         demoBtn.style.display = 'inline-block';
         return;
       }
+      openBtn.href = 'spotbuzz://s#v1=' + match[1];
+      openBtn.style.display = 'inline-block';
       copyBtn.style.display = 'inline-block';
       demoBtn.style.display = 'none';
       try {
