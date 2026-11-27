@@ -117,6 +117,8 @@
       <ul id="place-list" class="place-list"></ul>
       <div class="actions">
         <button id="btn-copy" class="btn btn-primary" type="button" onclick="copyLink()">Copy SpotPack Link</button>
+        <button id="btn-dl" class="btn btn-secondary" type="button" onclick="downloadJson()" style="display:none">Download .json</button>
+        <button id="btn-demo" class="btn btn-primary" type="button" onclick="loadDemo()" style="display:none">Load Demo: Oulu Top 10</button>
         <a class="btn btn-secondary" href="../">About SpotBuzz</a>
       </div>
       <p class="note">
@@ -127,6 +129,9 @@
   </main>
 
   <script>
+    var DEMO_HASH = '#v1=H4sIADILCWsC_23Su26DMBQG4FexPHRCEQYMLlubJZV6iZpsVQcLrHIKsakvkaoo714HIjBtR4P86fz_8QkfcUkibHGJX1zn0F71iMQ4wj0u305Y-u97paFXXQdgwP_oOC5zuopJSm79SeEyoassp4k_aVyyOMK1v_XEdSss2n05rgUyllsn8DkayWfuuZbr0EtjwmYvviX54BF6Be8Frxp0gzr4aGyjnJm5PQirDpyH07G0mDVGkxGLr9iuAiErgdZCWj1DdyBVx2XvwFi1yDpbBRup5EqtwX6j3qedlFdlHV-GI4QlATFEDefZiloYq4FLX5UWwk7YZSsSWacOoFrQbbuYKytClrJ0yQ4rXXPbiFrzbjK30IL5PSHLspmiGVm2v7k0oqFCXFt_VyIwvqh6IjeuH0g_-WIJYXEFXZoPA2GW5T2ClFz-ma5IgqD5cPonqLGdQNqBNPPbcKDDh5HkwURjyCRUPn3LSMNRaAO1fxnv5x93Xee8JAMAAA';
+    var currentPack = null;
+
     function b64UrlToBytes(b64url) {
       var b64 = b64url.replace(/-/g, '+').replace(/_/g, '/');
       while (b64.length % 4) b64 += '=';
@@ -140,13 +145,24 @@
       var titleEl = document.getElementById('pack-title');
       var metaEl = document.getElementById('pack-meta');
       var listEl = document.getElementById('place-list');
+      var copyBtn = document.getElementById('btn-copy');
+      var dlBtn = document.getElementById('btn-dl');
+      var demoBtn = document.getElementById('btn-demo');
+      listEl.innerHTML = '';
+      currentPack = null;
+
       var hash = window.location.hash || '';
       var match = hash.match(/v1=([A-Za-z0-9_-]+)/);
       if (!match) {
-        titleEl.textContent = 'No SpotPack data in link';
-        metaEl.textContent = 'Share a SpotPack from SpotBuzz on Android to preview it here.';
+        titleEl.textContent = 'SpotBuzz SpotPack';
+        metaEl.textContent = 'No SpotPack in URL yet — try the Oulu Top 10 demo pack below!';
+        copyBtn.style.display = 'none';
+        dlBtn.style.display = 'none';
+        demoBtn.style.display = 'inline-block';
         return;
       }
+      copyBtn.style.display = 'inline-block';
+      demoBtn.style.display = 'none';
       try {
         var compressed = b64UrlToBytes(match[1]);
         var ds = new DecompressionStream('gzip');
@@ -157,6 +173,8 @@
         var data = JSON.parse(text);
         if (data.v !== 1 || !Array.isArray(data.p)) throw new Error('Invalid format');
 
+        currentPack = data;
+        dlBtn.style.display = 'inline-block';
         titleEl.textContent = String(data.t || 'SpotBuzz SpotPack');
         metaEl.textContent = data.p.length + ' places • Decoded locally in browser';
 
@@ -193,7 +211,31 @@
       } catch (err) {
         titleEl.textContent = 'Invalid SpotPack link';
         metaEl.textContent = 'Could not decode this SpotPack link.';
+        dlBtn.style.display = 'none';
       }
+    }
+
+    function loadDemo() {
+      window.location.hash = DEMO_HASH;
+    }
+
+    function downloadJson() {
+      if (!currentPack) return;
+      var places = currentPack.p.map(function (item) {
+        return {
+          name: String(item.n || 'Place'),
+          latitude: Number(item.la),
+          longitude: Number(item.lo),
+          radiusMeters: item.r ? Number(item.r) : 100,
+          description: item.d ? String(item.d) : '',
+          category: String(currentPack.t || 'SpotBuzz')
+        };
+      });
+      var blob = new Blob([JSON.stringify(places, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = String(currentPack.t || 'spotpack').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.json';
+      a.click();
     }
 
     function copyLink() {
@@ -204,6 +246,7 @@
       }
     }
 
+    window.addEventListener('hashchange', decodeSpotPack);
     decodeSpotPack();
   </script>
 </body>
