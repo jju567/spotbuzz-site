@@ -81,21 +81,21 @@
     }
     .hero-shell {
       position: relative;
+      width: 100%;
       overflow: hidden;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      margin-top: 24px;
-      padding: 28px 24px 40px;
-      background: #070d19;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 20px 44px;
+      background: #050a14;
     }
     .hero-video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center 22%;
-      opacity: 0.52;
+      object-fit: contain;
+      object-position: center center;
+      opacity: 0.56;
       pointer-events: none;
     }
     .hero-scrim {
@@ -103,33 +103,82 @@
       inset: 0;
       background: linear-gradient(
         180deg,
-        rgba(7, 13, 25, 0.52) 0%,
-        rgba(7, 13, 25, 0.68) 55%,
-        rgba(7, 13, 25, 0.92) 100%
+        rgba(5, 10, 20, 0.45) 0%,
+        rgba(5, 10, 20, 0.65) 58%,
+        rgba(5, 10, 20, 0.90) 100%
       );
       pointer-events: none;
     }
     .hero-foreground {
       position: relative;
       z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
     }
-    .hero-audio-btn {
+    .hero-watch-btn {
       position: absolute;
-      right: 14px;
-      bottom: 14px;
+      right: 18px;
+      bottom: 16px;
       z-index: 2;
-      background: rgba(15, 23, 42, 0.78);
+      background: rgba(15, 23, 42, 0.86);
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 6px 12px;
+      padding: 8px 14px;
       font: inherit;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       backdrop-filter: blur(6px);
     }
-    .hero-audio-btn:hover {
+    .hero-watch-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(3, 7, 15, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .video-modal.hidden { display: none; }
+    .video-modal-inner {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      background: #050a14;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+    }
+    .video-modal-inner video {
+      display: block;
+      width: 100%;
+      max-height: 82vh;
+      background: #000;
+    }
+    .video-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.88);
+      color: var(--text);
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .video-modal-close:hover {
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -308,15 +357,16 @@
         <button id="btn-fi" class="lang-btn" type="button" onclick="setLang('fi')">FI</button>
       </nav>
     </header>
+  </div>
 
-    <section class="hero-shell">
-      <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="metadata">
-        <source src="media/spotbuzz-hero.mp4" type="video/mp4" />
-      </video>
-      <div class="hero-scrim" aria-hidden="true"></div>
-      <button id="heroAudioBtn" class="hero-audio-btn" type="button" onclick="toggleHeroAudio()">&#128263; Sound off</button>
+  <section class="hero-shell">
+    <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="metadata">
+      <source src="media/spotbuzz-hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <button id="heroWatchBtn" class="hero-watch-btn" type="button" onclick="openVideoModal()" data-en="&#9654; Watch video" data-fi="&#9654; Katso video">&#9654; Watch video</button>
 
-      <div class="hero-foreground">
+    <div class="hero-foreground">
         <div class="radar-wrap" aria-hidden="true">
           <svg class="radar-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -396,6 +446,7 @@
       </div>
     </section>
 
+  <div class="container">
     <main id="content-en">
 
       <h2 class="section-title">Key Features</h2>
@@ -525,27 +576,44 @@
     </footer>
   </div>
 
+  <div id="videoModal" class="video-modal hidden" onclick="if (event.target === this) closeVideoModal()">
+    <div class="video-modal-inner">
+      <button type="button" class="video-modal-close" aria-label="Close" onclick="closeVideoModal()">&#10005;</button>
+      <video id="modalVideo" controls playsinline preload="none">
+        <source src="media/spotbuzz-hero.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+
   <script>
-    function updateAudioBtnLabel() {
-      var video = document.getElementById('heroVideo');
-      var btn = document.getElementById('heroAudioBtn');
-      if (!video || !btn) return;
-      var isFi = document.documentElement.lang === 'fi';
-      if (video.muted) {
-        btn.textContent = isFi ? '\uD83D\uDD07 Äänet pois' : '\uD83D\uDD07 Sound off';
-      } else {
-        btn.textContent = isFi ? '\uD83D\uDD0A Äänet päällä' : '\uD83D\uDD0A Sound on';
+    function openVideoModal() {
+      var bg = document.getElementById('heroVideo');
+      var modal = document.getElementById('videoModal');
+      var mv = document.getElementById('modalVideo');
+      if (bg) bg.pause();
+      if (modal) modal.classList.remove('hidden');
+      if (mv) {
+        mv.currentTime = 0;
+        mv.muted = false;
+        mv.play().catch(function () {});
       }
     }
-    function toggleHeroAudio() {
-      var video = document.getElementById('heroVideo');
-      if (!video) return;
-      video.muted = !video.muted;
-      if (!video.muted) {
-        video.play().catch(function () {});
+    function closeVideoModal() {
+      var bg = document.getElementById('heroVideo');
+      var modal = document.getElementById('videoModal');
+      var mv = document.getElementById('modalVideo');
+      if (mv) {
+        mv.pause();
       }
-      updateAudioBtnLabel();
+      if (modal) modal.classList.add('hidden');
+      if (bg) {
+        bg.muted = true;
+        bg.play().catch(function () {});
+      }
     }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeVideoModal();
+    });
     function setLang(lang) {
       var isFi = lang === 'fi';
       document.getElementById('hero-en').classList.toggle('hidden', isFi);
@@ -559,7 +627,6 @@
       document.querySelectorAll('[data-en][data-fi]').forEach(function (el) {
         el.textContent = isFi ? el.getAttribute('data-fi') : el.getAttribute('data-en');
       });
-      updateAudioBtnLabel();
     }
     function revealEmail(btn) {
       var u = [106,97,114,109,111,46,106,117,110,116,117,110,101,110,43,115,112,111,116,98,117,122,122];
